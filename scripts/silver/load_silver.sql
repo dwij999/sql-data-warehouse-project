@@ -1,5 +1,59 @@
 
+-- This stored procedure automates the Silver Layer load process in the data warehouse. It performs cleansing, transformation, and standardization of raw Bronze Layer data before storing it in Silver Layer tables.
 
+-- Key steps:
+
+-- Customer Info (crm_cust_info)
+
+-- Deduplicates records using ROW_NUMBER() to keep the latest entry per customer.
+
+-- Cleans names with TRIM.
+
+-- Maps marital status and gender codes to descriptive values.
+
+-- Product Info (crm_prd_info)
+
+-- Extracts category IDs and product keys from raw strings.
+
+-- Replaces null product costs with 0.
+
+-- Maps product line codes to descriptive values.
+
+-- Converts product start dates to DATE.
+
+-- Calculates product end dates using LEAD() (next start date minus one day).
+
+-- Sales Details (crm_sales_details)
+
+-- Cleanses order, ship, and due dates (valid 8-digit integers → DATE, invalid → NULL).
+
+-- Recomputes sales if missing or inconsistent (quantity × price).
+
+-- Corrects invalid prices by deriving from sales ÷ quantity.
+
+-- ERP Customer (erp_cust_az12)
+
+-- Removes NAS prefix from IDs.
+
+-- Nullifies future birthdates.
+
+-- Standardizes gender values.
+
+-- ERP Location (erp_loc_a101)
+
+-- Removes dashes from IDs.
+
+-- Maps country codes to full names, replaces blanks with n/a.
+
+-- ERP Category (erp_px_cat_g1v2)
+
+-- Direct load from Bronze to Silver without transformation.
+
+-- Error handling & logging:
+
+-- Wrapped in TRY…CATCH for error capture.
+
+-- Prints start/end messages and total load duration in seconds.
 
 
 
